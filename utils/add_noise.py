@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # Simple PoC script to add some noise to a column in a dataset
-import os
 import argparse
 import pandas as pd
 import numpy as np
@@ -24,26 +23,32 @@ def parse_args():
 def main():
     args = parse_args()
 
+    # read original data
     df = pd.read_csv(args.input)
 
     # check column name exists
     if args.column_name not in df.columns:
         raise ValueError(f"Column name {args.column_name} does not exist in the input file")
 
+    # time and event of original data
     original_dist = df[[args.column_name, args.column_name_event]].values
 
+    # creating noise
     noise = np.random.normal(0, args.sigma, df.shape[0])
     noise = np.round(noise).astype(int)
     noise = np.clip(noise, -args.max_clip_value, args.max_clip_value)
+    print(f'Min noise {min(noise)}')
+    print(f'Max noise {max(noise)}\n')
 
+    # adding noise
     noised = df[args.column_name] + noise
+
     # we assume we can observe event at t=0
     noised = np.clip(noised, 1, None)
+
     # change column values with noised values
     df[args.column_name] = noised
     print(f'Noised {args.column_name}')
-    print(f'Min noise {min(noised)}')
-    print(f'Max noise {max(noised)}\n')
 
     # check that output file does not already exist
     # if os.path.exists(args.output):
@@ -55,9 +60,15 @@ def main():
     print(f'Maximum difference between the CDF of the two samples: {statistic}')
     print(f'P-value: {pvalue}\n')
 
-    # save output
-    df.to_csv(args.output, index=False)
+    return pvalue, df, args.output
 
 
 if __name__ == "__main__":
-    main()
+    # noise data until pvalue is greater than a threshold
+    thr_pvalue = 0.999
+    pvalue = 0
+    while pvalue < thr_pvalue:
+        pvalue, df, output = main()
+
+    # save output
+    df.to_csv(output, index=False)
