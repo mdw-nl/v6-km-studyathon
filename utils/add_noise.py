@@ -67,8 +67,14 @@ if __name__ == "__main__":
     # noise data until pvalue is greater than a threshold
     thr_pvalue = 0.999
     pvalue = 0
+    count = 1
     while pvalue < thr_pvalue:
+        print(f'Iteration {count}')
         pvalue, df, output = main()
+        count += 1
+        if count == 100:
+            print(f'Change noise parameters, not getting above {thr_pvalue}')
+            break
 
     # save output
     df.to_csv(output, index=False)
