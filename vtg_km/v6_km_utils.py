@@ -100,13 +100,9 @@ def get_unique_event_times(df: pd.DataFrame, *args, **kwargs) -> List[str]:
     - List of unique event times
     """
     time_column_name = kwargs.get("time_column_name")
-    query_string = kwargs.get("query_string")
-    return (
-        df
-        .query(query_string)[time_column_name]
-        .unique()
-        .tolist()
-        )
+    query_string = kwargs.get("query_string", None)
+
+    return df[time_column_name].unique().tolist()
 
 
 @data(1)
@@ -130,7 +126,8 @@ def get_km_event_table(df: pd.DataFrame, *args, **kwargs) -> str:
 
     # Filter the local dataframe with the query
     info(f"Overall number of patients: {df.shape[0]}")
-    df = df.query(query_string)
+    if query_string:
+        df = df.query(query_string)
     info(f"Number of patients in the cohort: {df.shape[0]}")
 
     # Apply binning to obfuscate event times
