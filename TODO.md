@@ -3,7 +3,8 @@ TODO
 
 * ~~:small_red_triangle_down: Do noising in SQL script?~~
 * ~~:small_red_triangle_down: Enforce minimum number of nodes~~
-* :small_red_triangle_down: Enforce exclusive partial task executor | in PR, to be merged in near future.
+* :small_red_triangle_down: Enforce exclusive partial task executor
+  * in PR, to be merged in near future.
 * ~~:small_red_triangle_down: Remove `query` feature~~
 * Refactor to single task (i.e. not collecting unique times first)
 * Documentation update
