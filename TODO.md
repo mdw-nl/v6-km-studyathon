@@ -11,6 +11,7 @@ TODO
 * Allow for restricting which (algorihm) functions are allowed on a node
 * How do we deal with filtering by a column (COHORT_ID)
 * :small_red_triangle_down: Log in nodes printing too much (disclosing parameters/data sent by researcher)
+  * What data? Global times data will need to be shared with the current design of algo. Same data that will be needed to generate plot for publication.
 * vantage6: wrong error message
   * Created issue: https://github.com/vantage6/vantage6/issues/1105
 * Multi party computation + homomorphic encryption
